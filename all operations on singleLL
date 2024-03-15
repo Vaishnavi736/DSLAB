@@ -1,0 +1,205 @@
+#include<stdio.h>
+#include<stdlib.h>
+void creation();
+void traversal();
+void insertion();
+void deletion();
+struct node{
+   int data;
+   struct node *link;
+   }*ptr,*header,*new,*ptr1;
+   void main()
+ {
+   int ch;
+    header=(struct node*)malloc(sizeof(struct node));
+    header->link=NULL;
+    while(1)
+    {
+       printf("\n enter the choice of operations 1.creation 2.traversal 3.insertion 4.deletion");
+       scanf("%d",&ch);
+    switch(ch)
+    {
+      case1:creation();
+            break;
+      case2:traversal();
+            break;
+      case3:insertion();
+            break;
+      case4:deletion();
+            break;
+      default:exit(0);
+      }
+    }        
+ }        
+ void creation()
+ {
+    int x;
+    printf("enter data to be inserted");
+    scanf("%d",&x);
+    new=(struct node*)malloc(sizeof(struct node));
+    if(header->link=NULL)
+    {
+       header->link=new;
+       new->link=NULL;
+       new->data=x;
+       }
+    else{
+    ptr=header;
+    while(ptr->link!=NULL)
+    {
+       ptr=ptr->link;
+    }
+    ptr->link=new;
+    new->link=NULL;
+    new->data=x;
+   }
+   }
+   void traversal()
+   {
+      printf("\nthe elements in the list are ");
+      ptr=header;
+      while(ptr->link!=NULL);
+      {
+         ptr=ptr->link;
+         printf("%d\n",ptr->data);
+      }
+    }
+    void insertion()
+    {
+         int x,ch,key;
+         printf("insertion at 1.beginning 2.ending 3.at any position");
+         scanf("%d",&ch);
+         printf("enter the value to be inserted");
+         printf("%d",x);
+         switch(ch)
+     {      
+          case1:
+          new=(struct node*)malloc(sizeof(struct node));
+          if(new==NULL)
+          {
+              printf("node is not created");
+              }
+              else
+              {
+                  new->link=header->link;
+                  header->link=new;
+                  new->data=x;
+                  }
+                  break;
+           case2:
+            new=(struct node*)malloc(sizeof(struct node));
+          if(new==NULL)
+          {
+              printf("node is not created");
+              }
+              else
+              {
+                  ptr=header;
+                  while(ptr->link!=NULL)
+                  {
+                     ptr=ptr->link;
+                  }
+                  ptr->link=new;
+                  new->link=NULL;
+                  new->data=x;
+                  }
+                  break;
+            case3:
+            printf("enter key value where node has to be inserted");
+            scanf("%d",&key) ;
+            new=(struct node*)malloc(sizeof(struct node));
+            if(new==NULL)
+             {
+              printf("node is not created");
+              }
+              else if(ptr==header)
+              {
+                  while(ptr->link!=NULL&&ptr->data!=key)
+                  {      
+                       ptr=ptr->link;
+                  }     
+              }
+              else if(ptr->link==NULL&&ptr->data!=key)
+                          {    
+                           printf("req node with data part as key value is not available,sounable to process");
+                             }
+                       else
+                     {
+                   new->link=ptr->link;
+                  ptr->link=new;
+                  new->data=x;
+               } 
+               
+               break;
+              default:exit(0);
+              }
+              }
+              void deletion()
+              {
+                  int ch,key;
+                   printf("\n where deletion has to be done 1.beginning 2.ending 3.at any position");
+                  scanf("%d",&ch);
+                  switch(ch)  
+                  {
+                     case 1:
+                     if(header->link==NULL)
+                     {
+                          printf("sll is empty so unable to delete node from list"); 
+                          }
+                      else    
+                      {
+                         ptr=header->link;
+                         header->link=ptr->link;
+                         printf("deleted node is %d",ptr->data);
+                         free(ptr);
+                         }
+                         break;
+                      case 2:   
+                      if(header->link==NULL)
+                     {
+                          printf("sll is empty so unable to delete node from list"); 
+                          }
+                      else    
+                      {
+                           ptr=header;
+                           while(ptr->link!=NULL)
+                           {
+                               ptr1=ptr;
+                               ptr1=ptr->link;
+                            }   
+                         }   
+                         ptr1->link=NULL;
+                         printf("delete node is %d",ptr->data);
+                         free(ptr);
+                         break;
+                         case 3:
+                         printf("enter key value");
+                         scanf("%d",&key);
+                         if(header->link==NULL)
+                         {
+                             printf("sll is empty so unable to delete node from list"); 
+                          }
+                      else    
+                      {
+                           ptr=header;
+                           while(ptr->link!=NULL&&ptr->data!=key)
+                           {
+                               ptr1=ptr;
+                               ptr=ptr->link;
+                            }   
+                           }
+                           if(ptr->link==NULL&&ptr->data!=key)
+                           {
+                                printf("req node with data part as key value not available");
+                                }
+                                else
+                                {
+                                    ptr1->link=ptr->link;
+                                    printf("deleted node is %d",ptr->data);
+                                    free(ptr);
+                                    }
+                                    break;
+                                    default:exit(0);
+                                    }
+                                    }
+                                   
