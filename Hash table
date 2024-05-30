@@ -1,0 +1,153 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 10
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *hash_table_chaining[SIZE];
+int hash_table_linear[SIZE];
+int hash_table_quadratic[SIZE];
+int hash_table_double[SIZE];
+
+void init_hash_table() {
+    for (int i = 0; i < SIZE; i++) {
+        hash_table_chaining[i] = NULL;
+        hash_table_linear[i] = -1;
+        hash_table_quadratic[i] = -1;
+        hash_table_double[i] = -1;
+    }
+}
+
+int hash_function(int key) {
+    return key % SIZE;
+}
+
+int linear_probe(int key) {
+    int index = hash_function(key);
+    while (hash_table_linear[index] != -1) {
+        index = (index + 1) % SIZE;
+    }
+    return index;
+}
+
+int quadratic_probe(int key, int i) {
+    int index = (hash_function(key) + i * i) % SIZE;
+    return index;
+}
+
+int double_hash(int key, int i) {
+    int index1 = hash_function(key);
+    int index2 = 7 - (key % 7); // Choosing prime number 7 for secondary hash function
+    int index = (index1 + i * index2) % SIZE;
+    return index;
+}
+
+void insert_chaining(int data) {
+    int index = hash_function(data);
+    struct node *new_node = (struct node*)malloc(sizeof(struct node));
+    new_node->data = data;
+    new_node->next = NULL;
+
+    if (hash_table_chaining[index] == NULL) {
+        hash_table_chaining[index] = new_node;
+    } else {
+        struct node *temp = hash_table_chaining[index];
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = new_node;
+    }
+}
+
+void insert_linear(int data) {
+    int index = linear_probe(data);
+    hash_table_linear[index] = data;
+}
+
+void insert_quadratic(int data) {
+    int i = 0;
+    int index;
+    do {
+        index = quadratic_probe(data, i);
+        i++;
+    } while (hash_table_quadratic[index] != -1 && i < SIZE);
+    hash_table_quadratic[index] = data;
+}
+
+void insert_double(int data) {
+    int i = 0;
+    int index;
+    do {
+        index = double_hash(data, i);
+        i++;
+    } while (hash_table_double[index] != -1 && i < SIZE);
+    hash_table_double[index] = data;
+}
+
+void display_chaining() {
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d: ", i);
+        struct node *temp = hash_table_chaining[i];
+        while (temp != NULL) {
+            printf("%d -> ", temp->data);
+            temp = temp->next;
+        }
+        printf("NULL\n");
+    }
+}
+
+void display_linear() {
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d: %d\n", i, hash_table_linear[i]);
+    }
+}
+
+void display_quadratic() {
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d: %d\n", i, hash_table_quadratic[i]);
+    }
+}
+
+void display_double() {
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d: %d\n", i, hash_table_double[i]);
+    }
+}
+
+int main() {
+    init_hash_table();
+
+    insert_chaining(5);
+    insert_chaining(15);
+    insert_chaining(25);
+
+    insert_linear(6);
+    insert_linear(16);
+    insert_linear(26);
+
+    insert_quadratic(7);
+    insert_quadratic(17);
+    insert_quadratic(27);
+
+    insert_double(8);
+    insert_double(18);
+    insert_double(28);
+
+    printf("Chaining:\n");
+    display_chaining();
+
+    printf("\nLinear Probing:\n");
+    display_linear();
+
+    printf("\nQuadratic Probing:\n");
+    display_quadratic();
+
+    printf("\nDouble Hashing:\n");
+    display_double();
+
+    return 0;
+}
